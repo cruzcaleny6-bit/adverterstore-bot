@@ -12,13 +12,12 @@ exports.handler = async (event) => {
         if (!API_USERNAME || !API_TOKEN) {
             return {
                 statusCode: 500,
-                body: JSON.stringify({ error: 'Credenciais da API não configuradas' })
+                body: JSON.stringify({ error: 'Credenciais não configuradas' })
             };
         }
 
         const auth = Buffer.from(`${API_USERNAME}:${API_TOKEN}`).toString('base64');
 
-        // Criar item na PromisePay
         const itemResponse = await fetch('https://api.promisepay.com/v2/items', {
             method: 'POST',
             headers: {
@@ -30,7 +29,7 @@ exports.handler = async (event) => {
                 amount: amount,
                 payment_type_id: 1,
                 buyer_id: buyerEmail,
-                seller_id: process.env.SELLER_ID || 'adverter_marketplace'
+                seller_id: 'adverterstore'
             })
         });
 
@@ -55,7 +54,7 @@ exports.handler = async (event) => {
         console.error('Erro:', error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: 'Erro interno no servidor' })
+            body: JSON.stringify({ error: 'Erro interno' })
         };
     }
 };
