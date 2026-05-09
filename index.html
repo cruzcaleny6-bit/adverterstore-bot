@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AdverterStore - Bot de Vendas</title>
+    <title>AdverterStore - Loja Hacker</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -21,7 +21,7 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-             padding: 20px 0 30px;
+            padding: 20px 0 30px;
             border-bottom: 2px solid #1effbc;
             margin-bottom: 40px;
         }
@@ -165,7 +165,6 @@
         }
         @media (max-width: 700px) {
             .header { flex-direction: column; text-align: center; gap: 15px; }
-            .product-title { font-size: 1.3rem; }
         }
     </style>
 </head>
@@ -174,51 +173,51 @@
     <div class="header">
         <div class="logo">
             <h1><i class="fas fa-dragon"></i> AdverterStore</h1>
-            <p>// BOT DE VENDAS AUTOMATIZADO // PROMISEPAY</p>
+            <p>// BOT DE VENDAS AUTOMATIZADO</p>
         </div>
         <div class="badge">
-            <i class="fas fa-circle" style="color: #1effbc; font-size: 0.6rem;"></i> ONLINE 24/7
+            <i class="fas fa-circle" style="color: #1effbc; font-size: 0.6rem;"></i> ONLINE
         </div>
     </div>
 
     <div class="products">
         <div class="product-card">
             <div class="product-icon"><i class="fas fa-microchip"></i></div>
-            <div class="product-title">LARA Gateway </div>
-            <div class="product-desc">Gateway de anonimização + VPN chain. Hardware dedicado para operações seguras. Entrega imediata.</div>
+            <div class="product-title">LARA Gateway PRO</div>
+            <div class="product-desc">Gateway de anonimização + VPN chain. Entrega via Instagram.</div>
             <div class="product-price">R$ 15,00</div>
-            <button class="btn-buy" onclick="startCheckout('LARA Gateway PRO', 74900)"><i class="fas fa-bolt"></i> COMPRAR AGORA</button>
+            <button class="btn-buy" onclick="startCheckout('LARA Gateway PRO', 1500)"><i class="fas fa-bolt"></i> COMPRAR</button>
         </div>
+        
         <div class="product-card">
             <div class="product-icon"><i class="fas fa-credit-card"></i></div>
             <div class="product-title">CC Black Vault</div>
-            <div class="product-desc">Painel de dumps validados + validador automático. Acesso vitalício via painel exclusivo.</div>
+            <div class="product-desc">Painel de dumps validados + validador automático.</div>
             <div class="product-price">R$ 25,00</div>
-            <button class="btn-buy" onclick="startCheckout('CC Black Vault', 29900)"><i class="fas fa-bolt"></i> COMPRAR AGORA</button>
+            <button class="btn-buy" onclick="startCheckout('CC Black Vault', 2500)"><i class="fas fa-bolt"></i> COMPRAR</button>
         </div>
     </div>
 
     <div class="status-area">
-        <h3><i class="fas fa-robot"></i> Status do Bot</h3>
-        <p id="botStatus">✅ Sistema pronto para vendas | Aguardando pedidos</p>
-        <div class="loading" id="loading">⏳ Processando... aguarde</div>
+        <h3><i class="fas fa-robot"></i> Status</h3>
+        <p id="botStatus">✅ Pagamento via PromisePay | Entrega pelo Instagram</p>
+        <div class="loading" id="loading">⏳ Processando...</div>
     </div>
 
     <div class="footer">
-        <p>🔐 Pagamentos processados pela PromisePay | Ambiente seguro</p>
-        <p>🏴‍☠️ AdverterStore - Todos os direitos reservados</p>
+        <p>🔐 Pagamentos processados pela PromisePay | Após a confirmação, enviamos nosso Instagram</p>
     </div>
 </div>
 
-<div id="paymentModal" class="modal">
+<div id="emailModal" class="modal">
     <div class="modal-content">
-        <i class="fas fa-lock" style="font-size: 3rem; color: #1effbc;"></i>
+        <i class="fas fa-envelope" style="font-size: 3rem; color: #1effbc;"></i>
         <h3 id="modalProductName">Produto</h3>
         <p id="modalPrice"></p>
-        <p style="font-size: 0.8rem;">Digite seu e-mail para receber o link de pagamento</p>
-        <input type="email" id="buyerEmail" placeholder="Seu melhor e-mail" required>
+        <p>Digite seu email para receber as instruções:</p>
+        <input type="email" id="customerEmail" placeholder="seu@email.com" required>
         <div class="modal-buttons">
-            <button class="modal-btn" onclick="closeModal()">Cancelar</button>
+            <button class="modal-btn" onclick="closeEmailModal()">Cancelar</button>
             <button class="modal-btn" onclick="processPayment()" style="background: #1effbc20;">Continuar →</button>
         </div>
     </div>
@@ -229,28 +228,28 @@
 <script>
     let currentProduct = { name: '', amount: 0 };
 
-    async function startCheckout(name, amount) {
+    function startCheckout(name, amount) {
         currentProduct = { name, amount };
         document.getElementById('modalProductName').innerText = name;
-        document.getElementById('modalPrice').innerHTML = `Valor: <strong style="font-size:1.5rem;">R$ ${(amount/100).toFixed(2)}</strong>`;
-        document.getElementById('paymentModal').style.display = 'flex';
+        document.getElementById('modalPrice').innerHTML = `Valor: <strong>R$ ${(amount/100).toFixed(2)}</strong>`;
+        document.getElementById('emailModal').style.display = 'flex';
     }
 
-    function closeModal() {
-        document.getElementById('paymentModal').style.display = 'none';
-        document.getElementById('buyerEmail').value = '';
+    function closeEmailModal() {
+        document.getElementById('emailModal').style.display = 'none';
+        document.getElementById('customerEmail').value = '';
     }
 
     async function processPayment() {
-        const email = document.getElementById('buyerEmail').value.trim();
-        if (!email) {
-            showToast('⚠️ Digite seu e-mail para continuar');
+        const email = document.getElementById('customerEmail').value.trim();
+        if (!email || !email.includes('@')) {
+            showToast('⚠️ Digite um email válido');
             return;
         }
 
-        closeModal();
+        closeEmailModal();
         document.getElementById('loading').style.display = 'block';
-        document.getElementById('botStatus').innerHTML = '🔄 Criando transação na PromisePay...';
+        document.getElementById('botStatus').innerHTML = '🔄 Criando transação...';
 
         try {
             const response = await fetch('/.netlify/functions/create-payment', {
@@ -266,22 +265,18 @@
             const data = await response.json();
 
             if (data.checkoutUrl) {
-                showToast('✓ Redirecionando para o checkout seguro...');
+                showToast('✓ Redirecionando para o checkout...');
                 setTimeout(() => {
                     window.location.href = data.checkoutUrl;
                 }, 1500);
-            } else if (data.error) {
-                showToast('❌ Erro: ' + data.error);
-                document.getElementById('botStatus').innerHTML = '⚠️ Falha na API. Verifique suas credenciais.';
             } else {
-                showToast('❌ Erro inesperado, tente novamente');
+                showToast('❌ Erro: ' + (data.error || 'Tente novamente'));
+                document.getElementById('botStatus').innerHTML = '⚠️ Erro na API';
             }
         } catch (error) {
-            console.error('Erro:', error);
-            showToast('❌ Erro de comunicação com o servidor');
-            document.getElementById('botStatus').innerHTML = '⚠️ Bot offline - verifique conexão';
+            showToast('❌ Erro de comunicação');
+            document.getElementById('botStatus').innerHTML = '⚠️ Offline';
         }
-
         document.getElementById('loading').style.display = 'none';
     }
 
@@ -293,4 +288,4 @@
     }
 </script>
 </body>
-      </html>
+</html>
